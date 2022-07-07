@@ -9,19 +9,19 @@ public static class SimpleSceneManager
 
 	public static bool HasNextScene()
 	{
-		return NextScene.IsValid();
+		return CurrentSceneIndex + 1 <= HighestSceneIndex;
 	}
 
 	public static bool HasPreviousScene()
 	{
-		return PreviousScene.IsValid();
+		return CurrentSceneIndex > 0;
 	}
 	
 	public static void LoadNextScene()
 	{
 		if (HasNextScene())
 		{
-			SceneManager.LoadScene(NextScene.buildIndex);
+			SceneManager.LoadScene(CurrentSceneIndex + 1);
 		}
 	}
 
@@ -29,11 +29,10 @@ public static class SimpleSceneManager
 	{
 		if (HasPreviousScene())
 		{
-			SceneManager.LoadScene(PreviousScene.buildIndex);
+			SceneManager.LoadScene(CurrentSceneIndex - 1);
 		}
 	}
 
 	private static int CurrentSceneIndex => SceneManager.GetActiveScene().buildIndex;
-	private static Scene NextScene => SceneManager.GetSceneByBuildIndex(CurrentSceneIndex + 1);
-	private static Scene PreviousScene => SceneManager.GetSceneByBuildIndex(CurrentSceneIndex - 1);
+	private static int HighestSceneIndex => SceneManager.sceneCountInBuildSettings - 1;
 }
